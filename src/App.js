@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Dropdown from './components/Dropdown'
+import Food from './components/Food'
+import MenuData from './data/MenuData'
+
+const App = () => {
+	const [foods, setFoods] = useState(MenuData)
+
+	const changeFoodData = (event) => {
+		const category = event.target.value
+		if (category === 'เมนูทั้งหมด') {
+			setFoods(MenuData)
+		} else {
+			const result = MenuData.filter((item) => {
+				return item.menu === category
+			})
+			setFoods(result)
+		}
+	}
+
+	return (
+		<div className='container'>
+			<Dropdown changeFoodData={changeFoodData} />
+			<div className='content'>
+				{foods.map((data, index) => {
+					return <Food key={index} {...data} />
+				})}
+			</div>
+		</div>
+	)
 }
 
-export default App;
+export default App
